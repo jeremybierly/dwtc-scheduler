@@ -50,11 +50,11 @@ const ScheduleDay: NextPage = () => {
   ];
 
   let user = {
-    userName: "admin",
+    userName: "error",
   };
 
   if (typeof window !== "undefined") {
-    user.userName = window.localStorage.getItem("userName") || "admin";
+    user.userName = window.localStorage.getItem("userName") || "error";
   }
 
   function reserveSlot(
@@ -63,6 +63,8 @@ const ScheduleDay: NextPage = () => {
     slot: string,
     userName: string
   ): void {
+    if (userName === "error")
+      return alert("you must be logged in to update the schedule");
     if (
       confirm(
         `Are you sure you want to set a reservation for ${court} from ${slot}?`
@@ -75,11 +77,30 @@ const ScheduleDay: NextPage = () => {
     }
   }
 
+  function cancelSlot(courtSlot: string, court: string, slot: string): void {
+    if (confirm(`Are you sure you want to cancel for ${court} from ${slot}?`)) {
+      set(
+        ref(database, "schedule/" + router.query.schedule + "/" + courtSlot),
+        ""
+      );
+    }
+  }
+
+  function changeDate(event: any): void {
+    window.location.href = `/schedule/${event.target.value}`;
+  }
+
   return (
     <>
       <Head>
         <title>DWTC Schedule</title>
       </Head>
+      <input
+        className="w-[200px] text-2xl border-2 border-gray-500 text-gray-700 bg-gray-300 dark:bg-gray-700 dark:text-gray-300 rounded "
+        type="date"
+        value={router.query.schedule}
+        onChange={changeDate}
+      />
       <ul className="lg:grid lg:grid-cols-4 lg:gap-4 lg:mt-4">
         <li className="hidden lg:block dark:text-gray-300 text-sm uppercase font-bold tracking-wide">
           Time
@@ -100,7 +121,6 @@ const ScheduleDay: NextPage = () => {
             </li>
             <TimeSlotDisplay
               slot={slot}
-              reserveSlot={reserveSlot}
               court="Court 1"
               courtSlot={`court1slot${index + 1}`}
               userName={
@@ -115,10 +135,11 @@ const ScheduleDay: NextPage = () => {
                 courtSlots &&
                 courtSlots[`court1slot${index + 1}`] === user.userName
               }
+              reserveSlot={reserveSlot}
+              cancelSlot={cancelSlot}
             />
             <TimeSlotDisplay
               slot={slot}
-              reserveSlot={reserveSlot}
               court="Court 2"
               courtSlot={`court2slot${index + 1}`}
               userName={
@@ -133,10 +154,11 @@ const ScheduleDay: NextPage = () => {
                 courtSlots &&
                 courtSlots[`court2slot${index + 1}`] === user.userName
               }
+              reserveSlot={reserveSlot}
+              cancelSlot={cancelSlot}
             />
             <TimeSlotDisplay
               slot={slot}
-              reserveSlot={reserveSlot}
               court="Court 3"
               courtSlot={`court3slot${index + 1}`}
               userName={
@@ -151,6 +173,8 @@ const ScheduleDay: NextPage = () => {
                 courtSlots &&
                 courtSlots[`court3slot${index + 1}`] === user.userName
               }
+              reserveSlot={reserveSlot}
+              cancelSlot={cancelSlot}
             />
           </>
         ))}

@@ -1,7 +1,3 @@
-function cancelSlot(courtSlot: string, court: string, slot: string): void {
-  confirm(`Are you sure you want to cancel for ${court} from ${slot}?`);
-}
-
 export function TimeSlotDisplay({
   userName,
   slot,
@@ -11,6 +7,7 @@ export function TimeSlotDisplay({
   isOpen,
   canCancel = false,
   reserveSlot,
+  cancelSlot,
 }: {
   userName: string;
   slot: string;
@@ -20,6 +17,7 @@ export function TimeSlotDisplay({
   isOpen: boolean;
   canCancel?: boolean;
   reserveSlot: Function;
+  cancelSlot: Function;
 }) {
   if (isOpen) {
     return (
