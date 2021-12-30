@@ -2,10 +2,15 @@ import type { NextPage } from "next";
 import { NextRouter, useRouter } from "next/router";
 import Head from "next/head";
 import { FirebaseApp, getApps, initializeApp } from "firebase/app";
-import { ref, Database, getDatabase, DataSnapshot } from "firebase/database";
+import {
+  set,
+  ref,
+  Database,
+  getDatabase,
+  DataSnapshot,
+} from "firebase/database";
 import { useObject } from "react-firebase-hooks/database";
 import { TimeSlotDisplay } from "../../components/timeslot";
-import { connect } from "http2";
 
 // Set the configuration for your app
 // TODO: Replace with your project's config object
@@ -30,7 +35,7 @@ const ScheduleDay: NextPage = () => {
   const router: NextRouter = useRouter();
   const path: string = "schedule/" + router.query.schedule;
 
-  const [snapshot, loading, error] = useObject(ref(database, path));
+  const [snapshot] = useObject(ref(database, path));
   const courtSlots = snapshot && snapshot.val();
   console.log(courtSlots);
   let slots: string[] = [
@@ -45,8 +50,30 @@ const ScheduleDay: NextPage = () => {
   ];
 
   let user = {
-    userName: "Bierly",
+    userName: "admin",
   };
+
+  if (typeof window !== "undefined") {
+    user.userName = window.localStorage.getItem("userName") || "admin";
+  }
+
+  function reserveSlot(
+    courtSlot: string,
+    court: string,
+    slot: string,
+    userName: string
+  ): void {
+    if (
+      confirm(
+        `Are you sure you want to set a reservation for ${court} from ${slot}?`
+      )
+    ) {
+      set(
+        ref(database, "schedule/" + router.query.schedule + "/" + courtSlot),
+        userName
+      );
+    }
+  }
 
   return (
     <>
@@ -72,8 +99,8 @@ const ScheduleDay: NextPage = () => {
               {slot}
             </li>
             <TimeSlotDisplay
-              key={index + "_Court1"}
               slot={slot}
+              reserveSlot={reserveSlot}
               court="Court 1"
               courtSlot={`court1slot${index + 1}`}
               userName={
@@ -90,8 +117,8 @@ const ScheduleDay: NextPage = () => {
               }
             />
             <TimeSlotDisplay
-              key={index + "_Court2"}
               slot={slot}
+              reserveSlot={reserveSlot}
               court="Court 2"
               courtSlot={`court2slot${index + 1}`}
               userName={
@@ -108,8 +135,8 @@ const ScheduleDay: NextPage = () => {
               }
             />
             <TimeSlotDisplay
-              key={index + "_Court3"}
               slot={slot}
+              reserveSlot={reserveSlot}
               court="Court 3"
               courtSlot={`court3slot${index + 1}`}
               userName={

@@ -1,13 +1,3 @@
-function reserveSlot(courtSlot: string, court: string, slot: string): void {
-  if (
-    confirm(
-      `Are you sure you want to set a reservation for ${court} from ${slot}?`
-    )
-  ) {
-    console.log("reservation confirmed...");
-  }
-}
-
 function cancelSlot(courtSlot: string, court: string, slot: string): void {
   confirm(`Are you sure you want to cancel for ${court} from ${slot}?`);
 }
@@ -20,6 +10,7 @@ export function TimeSlotDisplay({
   reservedBy,
   isOpen,
   canCancel = false,
+  reserveSlot,
 }: {
   userName: string;
   slot: string;
@@ -28,6 +19,7 @@ export function TimeSlotDisplay({
   reservedBy: string;
   isOpen: boolean;
   canCancel?: boolean;
+  reserveSlot: Function;
 }) {
   if (isOpen) {
     return (
@@ -40,7 +32,7 @@ export function TimeSlotDisplay({
           <span className="grow p-2 pb-0 text-xs text-right">{court}</span>
         </label>
         <button
-          onClick={() => reserveSlot(courtSlot, court, slot)}
+          onClick={() => reserveSlot(courtSlot, court, slot, userName)}
           className="rounded-b h-20 font-bold text-xl text-green-200 dark:text-green-700 bg-green-600 dark:bg-green-400 mt-2"
           name={courtSlot}
           value={userName}
