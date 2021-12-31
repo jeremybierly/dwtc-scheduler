@@ -16,13 +16,13 @@ function MyApp({ Component, pageProps }) {
         {userName === "" ? (
           <a
             href="/login/"
-            className="p-2 bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 rounded font-bold"
+            className="py-2 px-4 bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 rounded font-bold"
           >
             Log In
           </a>
         ) : (
           <button
-            className="p-2 bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 rounded font-bold"
+            className="py-2 px-4 bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 rounded font-bold"
             onClick={logOut}
           >
             Log Out
