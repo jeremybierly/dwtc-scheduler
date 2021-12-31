@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 import { useLocalStorage } from "../hooks/uselocalStorage";
+import Link from "next/link";
 
 function MyApp({ Component, pageProps }) {
   const [userName, setUserName] = useLocalStorage("userName", "");
@@ -14,12 +15,11 @@ function MyApp({ Component, pageProps }) {
           DWTC Schedule
         </h1>
         {userName === "" ? (
-          <a
+          <Link
             href="/login/"
-            className="py-2 px-4 bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 rounded font-bold"
           >
-            Log In
-          </a>
+            <a className="py-2 px-4 bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 rounded font-bold">>Log In</a
+          </Link>
         ) : (
           <button
             className="py-2 px-4 bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 rounded font-bold"
