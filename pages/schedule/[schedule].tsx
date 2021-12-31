@@ -2,18 +2,10 @@ import type { NextPage } from "next";
 import { NextRouter, useRouter } from "next/router";
 import Head from "next/head";
 import { FirebaseApp, getApps, initializeApp } from "firebase/app";
-import {
-  set,
-  ref,
-  Database,
-  getDatabase,
-  DataSnapshot,
-} from "firebase/database";
+import { set, ref, Database, getDatabase } from "firebase/database";
 import { useObject } from "react-firebase-hooks/database";
 import { TimeSlotDisplay } from "../../components/timeslot";
 
-// Set the configuration for your app
-// TODO: Replace with your project's config object
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
