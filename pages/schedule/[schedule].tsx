@@ -5,6 +5,7 @@ import { FirebaseApp, getApps, initializeApp } from "firebase/app";
 import { set, ref, Database, getDatabase } from "firebase/database";
 import { useObject } from "react-firebase-hooks/database";
 import { TimeSlotDisplay } from "../../components/timeslot";
+import { useLocalStorage } from "../../hooks/uselocalStorage";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -24,6 +25,7 @@ if (getApps().length === 0) {
 const database: Database = getDatabase(firebaseApp);
 
 const ScheduleDay: NextPage = () => {
+  const [userName, setUserName] = useLocalStorage("userName", "");
   const router: NextRouter = useRouter();
   const path: string = "schedule/" + router.query.schedule;
 
@@ -45,9 +47,7 @@ const ScheduleDay: NextPage = () => {
     userName: "error",
   };
 
-  if (typeof window !== "undefined") {
-    user.userName = window.localStorage.getItem("userName") || "error";
-  }
+  user.userName = userName || "error";
 
   function reserveSlot(
     courtSlot: string,

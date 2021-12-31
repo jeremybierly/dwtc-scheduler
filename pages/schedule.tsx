@@ -4,6 +4,7 @@ import { FirebaseApp, getApps, initializeApp } from "firebase/app";
 import { set, ref, Database, getDatabase } from "firebase/database";
 import { useObject } from "react-firebase-hooks/database";
 import { TimeSlotDisplay } from "../components/timeslot";
+import { useLocalStorage } from "../hooks/uselocalStorage";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -23,9 +24,10 @@ if (getApps().length === 0) {
 const database: Database = getDatabase(firebaseApp);
 
 const Schedule: NextPage = () => {
+  const [userName, setUserName] = useLocalStorage("userName", "");
   let day = new Date();
   let today =
-    day.getFullYear() + "-" + day.getMonth() + 1 + "-" + day.getDate();
+    day.getFullYear() + "-" + (day.getMonth() + 1) + "-" + day.getDate();
 
   const path: string = "schedule/" + today;
 
@@ -48,9 +50,7 @@ const Schedule: NextPage = () => {
     userName: "error",
   };
 
-  if (typeof window !== "undefined") {
-    user.userName = window.localStorage.getItem("userName") || "error";
-  }
+  user.userName = userName || "error";
 
   function reserveSlot(
     courtSlot: string,
@@ -85,8 +85,9 @@ const Schedule: NextPage = () => {
         <title>DWTC Schedule</title>
       </Head>
       <input
-        className="w-[200px] text-2xl border-2 border-gray-500 text-gray-700 bg-gray-300 dark:bg-gray-700 dark:text-gray-300 rounded "
+        className="my-4 w-[200px] text-2xl border-2 border-gray-500 text-gray-700 bg-gray-300 dark:bg-gray-700 dark:text-gray-300 rounded "
         type="date"
+        value={today}
         onChange={changeDate}
       />
       <ul className="lg:grid lg:grid-cols-4 lg:gap-4 lg:mt-4">

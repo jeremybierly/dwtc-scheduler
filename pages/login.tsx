@@ -4,7 +4,7 @@ import Head from "next/head";
 import { FirebaseApp, getApps, initializeApp } from "firebase/app";
 import { ref, Database, getDatabase } from "firebase/database";
 import { useObject } from "react-firebase-hooks/database";
-import { setTimeout } from "timers/promises";
+import { useLocalStorage } from "../hooks/uselocalStorage";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -27,6 +27,7 @@ const Login: NextPage = () => {
   const [snapshot] = useObject(ref(database, "users"));
   const usersList = snapshot && Object.entries(snapshot.val());
   const [email, setEmail] = useState();
+  const [userName, setUserName] = useLocalStorage("userName", "");
 
   const handleInput = (event) => {
     setEmail(event.target.value);
@@ -38,7 +39,7 @@ const Login: NextPage = () => {
         return item[1]["email"] === email;
       })[0][1];
       if (user) {
-        window.localStorage.setItem("userName", user["username"]);
+        setUserName(user["username"]);
         window.location.href = "/schedule/";
       }
     } catch (error) {}
@@ -46,6 +47,7 @@ const Login: NextPage = () => {
 
   return (
     <form onSubmit={logMeIn}>
+      <label htmlFor="userEmail">Email Address</label>
       <input
         onChange={handleInput}
         className="block mt-4 w-80 text-lg p-2"
@@ -53,6 +55,13 @@ const Login: NextPage = () => {
         name="userEmail"
         type="text"
         placeholder="Email"
+      />
+      <label htmlFor="userPassword">Password</label>
+      <input
+        className="block mt-4 w-80 text-lg p-2"
+        type="password"
+        id="userPassword"
+        name="userPassword"
       />
       <button
         type="submit"
