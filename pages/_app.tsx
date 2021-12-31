@@ -15,10 +15,10 @@ function MyApp({ Component, pageProps }) {
           DWTC Schedule
         </h1>
         {userName === "" ? (
-          <Link
-            href="/login/"
-          >
-            <a className="py-2 px-4 bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 rounded font-bold">>Log In</a
+          <Link href="/login/">
+            <a className="py-2 px-4 bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 rounded font-bold">
+              Log In
+            </a>
           </Link>
         ) : (
           <button
