@@ -28,9 +28,10 @@ const Login: NextPage = () => {
   const usersList = snapshot && Object.entries(snapshot.val());
   const [email, setEmail] = useState();
   const [userName, setUserName] = useLocalStorage("userName", "");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleInput = (event) => {
-    setEmail(event.target.value);
+    setEmail(event.target.value.toLowerCase());
   };
   function logMeIn(event: any): void {
     event.preventDefault();
@@ -42,23 +43,38 @@ const Login: NextPage = () => {
         setUserName(user["username"]);
         window.location.href = "/schedule/";
       }
-    } catch (error) {}
+    } catch (error) {
+      setErrorMessage("Email Address Not Found");
+    }
   }
 
   return (
     <form onSubmit={logMeIn}>
-      <label htmlFor="userEmail">Email Address</label>
+      <label
+        className="block mt-4 text-gray-400 dark:text-gray-600"
+        htmlFor="userEmail"
+      >
+        Email Address
+      </label>
       <input
         onChange={handleInput}
-        className="block mt-4 w-80 text-lg p-2"
+        className="block w-80 text-lg p-2 border-2 border-gray-500 rounded"
         id="userEmail"
         name="userEmail"
         type="text"
         placeholder="Email"
       />
-      <label htmlFor="userPassword">Password</label>
+      {errorMessage !== "" ? (
+        <p className="text-red-500">{errorMessage}</p>
+      ) : null}
+      <label
+        className="block mt-4 text-gray-400 dark:text-gray-600"
+        htmlFor="userPassword"
+      >
+        Password
+      </label>
       <input
-        className="block mt-4 w-80 text-lg p-2"
+        className="block w-80 text-lg p-2 border-2 border-gray-500 rounded"
         type="password"
         id="userPassword"
         name="userPassword"
