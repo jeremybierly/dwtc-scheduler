@@ -1,23 +1,14 @@
 import type { NextPage } from "next";
-import { useState, useEffect } from "react"
+import { useEffect } from "react";
 
 const Home: NextPage = () => {
-  const [today, setToday] = useState("2022-01-01")
+  useEffect(() => {
+    let day = new Date();
+    let today = day.toISOString().split("T")[0];
+    window.location.href = "/schedule/" + today;
+  }, []);
 
-
-  useEffect(()=> {
-    let day = new Date()
-    setToday(day.getFullYear() + "-" + (day.getMonth() + 1) + "-" + day.getDate())
-    window.location.href="/schedule/"+ today
-  },[])
-    
-  
-
-  return (
-    <>
-      
-    </>
-  );
+  return <></>;
 };
 
 export default Home;
