@@ -33,6 +33,7 @@ const ScheduleDay: NextPage = () => {
   const courtSlots = snapshot && snapshot.val();
   console.log(courtSlots);
   let slots: string[] = [
+    "06:00 - 08:00 AM",
     "08:00 - 10:00 AM",
     "10:00 - 12:00 PM",
     "12:00 - 02:00 PM",
