@@ -33,16 +33,19 @@ const Members: NextPage = () => {
   }
   return (
     <>
-      <h1>Members</h1>
+      <h1 className="py-4 mb-4 text-gray-500 text-2xl border-b-2 border-gray-500">
+        Members
+      </h1>
       {membersList.map((member: any, index: number) => (
         <div
-          className="text-gray-800, dark:text-white mb-4"
+          className="text-gray-700, dark:text-gray-200 mb-4"
           key={index}
         >
           <div>
             Name: {member.first} {member.last}
           </div>
           <div>Phone: {member.phone}</div>
+          <hr className="my-4" />
         </div>
       ))}
     </>
