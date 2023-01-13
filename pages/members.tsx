@@ -41,10 +41,15 @@ const Members: NextPage = () => {
           className="text-gray-700, dark:text-gray-200 mb-4"
           key={index}
         >
-          <div>
-            Name: {member.first} {member.last}
+          <div className="text-xl">
+            {member.first} {member.last}
           </div>
-          <div>Phone: {member.phone}</div>
+          <a
+            href={'sms:' + member.phone}
+            className="inline-block my-2 py-2 px-4 bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 rounded font-bold"
+          >
+            {member.phone}
+          </a>
           <hr className="my-4" />
         </div>
       ))}
